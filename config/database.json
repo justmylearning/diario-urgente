@@ -1,0 +1,7 @@
+{
+    "host":"localhost",
+    "user":"root",
+    "password":"",
+    "database":"diario_urgente",
+    "port":3306
+}
