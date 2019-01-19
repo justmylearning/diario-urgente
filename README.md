@@ -3,5 +3,5 @@
 -Registro (OK)
 -Classificar noticias por categorias (OK)
 -Comentários (OK)
--Gostei / Não gostei para os comentários
--Gostei / Não gostei para as notícias
+-Gostei / Não gostei para os comentários (OK)
+-Gostei / Não gostei para os posts (OK)

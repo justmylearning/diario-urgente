@@ -1,26 +1,22 @@
 const Model = require('./Model.js');
-const CommentLike = require('./CommentLike.js');
 
-class Comment extends Model{
+class PostLike extends Model{
   
   // Sequelize; //Sequelize Class
   // sequelize; //Sequelize DB connection object
 
   getContext(){
-    var sequelizeModel = this.sequelize.define('comments', {
+    var sequelizeModel = this.sequelize.define('comment_likes', {
       id: {
         type: this.Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      post_id: {
-        type: this.Sequelize.INTEGER
-      },
       user_id: {
         type: this.Sequelize.INTEGER
       },
-      text: {
-        type: this.Sequelize.TEXT
+      comment_id: {
+        type: this.Sequelize.INTEGER
       },
       created_at: {
         type: this.Sequelize.DATE
@@ -31,9 +27,8 @@ class Comment extends Model{
     }, {timestamps: false});
     
     //sequelizeModel.sync({force: false}); //AUTO UPDATE TABLE STRUCTURE
-    sequelizeModel.hasMany(CommentLike);
     return sequelizeModel;
   }
 }
 
-module.exports = new Comment().getContext();
+module.exports = new PostLike().getContext();

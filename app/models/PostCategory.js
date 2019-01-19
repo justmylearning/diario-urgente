@@ -23,7 +23,7 @@ class PostCategory extends Model{
       }
     }, {timestamps: false});
 
-    sequelizeModel.sync({force: false}); //AUTO UPDATE TABLE STRUCTURE
+    //sequelizeModel.sync({force: false}); //AUTO UPDATE TABLE STRUCTURE
     return sequelizeModel;
   }
 }

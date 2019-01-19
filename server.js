@@ -8,22 +8,32 @@ const postRoutes = require('./app/controllers/PostController.js');
 const commentRoutes = require('./app/controllers/CommentController.js');
 const postCategoryRoutes = require('./app/controllers/PostCategoryController.js');
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
- 
-// parse application/json
-app.use(bodyParser.json())
+const modelsBootstrap = require('./app/models/index.js');
+const controllersBootstrap = require('./app/controllers/index.js');
 
-app.use(userRoutes);
-app.use(authRoutes);
-app.use(postRoutes);
-app.use(commentRoutes);
-app.use(postCategoryRoutes);
+var server = async () => {
+    if(require.main == module)
+        await modelsBootstrap(); //UPDATE DATABASE STRUCTURE
+        
+    // parse application/x-www-form-urlencoded
+    app.use(bodyParser.urlencoded({ extended: false }))
+    // parse application/json
+    app.use(bodyParser.json())
+    
+    controllersBootstrap(app);
 
-app.get('/', (req, res) => {
-    res.send('its work');
-})
-
-app.listen(3000);
+    // app.use(userRoutes);
+    // app.use(authRoutes);
+    // app.use(postRoutes);
+    // app.use(commentRoutes);
+    // app.use(postCategoryRoutes);
+    
+    app.get('/', (req, res) => {
+        res.send('its work');
+    })
+    
+    app.listen(3000);
+}
+server();
 
 module.exports = app;

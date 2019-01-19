@@ -7,26 +7,8 @@ var newPost = null;
 var newUser = null;
 var newComment = null;
 var newPostCategory = null;
+var newPostLike = null;
 
-it('AUTH TEST', (done) => {
-
-    const params = {
-        email:"teste@teste.com",
-        password:"teste.com"
-    }
-
-    request(server)
-        .post('/api/auth')
-        .send(params)
-        .expect(200)
-        .end((err, res) => {
-            if(err) throw {error:err,response:res.text};
-            console.log(res.text);
-            const resJson = JSON.parse(res.text);
-            token = resJson.body.token;
-            done();
-        })
-});
 
 it('CREATE USER TEST', (done) => {
 
@@ -50,6 +32,25 @@ it('CREATE USER TEST', (done) => {
 
 
 
+it('AUTH TEST', (done) => {
+
+    const params = {
+        email:"teste@teste.com",
+        password:"teste.com"
+    }
+
+    request(server)
+        .post('/api/auth')
+        .send(params)
+        .expect(200)
+        .end((err, res) => {
+            if(err) throw {error:err,response:res.text};
+            console.log(res.text);
+            const resJson = JSON.parse(res.text);
+            token = resJson.body.token;
+            done();
+        })
+});
 
 
 
@@ -199,7 +200,7 @@ it('UPDATE POST TEST', (done) => {
         post_id:newPost.id,
         category_id:newPostCategory.id,
         title:"Tudo sobre bem estar",
-        html_content:"<p>bla bla bla!!!!</p>"
+        html_content:"<p>bla bla bla Alterado!!!!</p>"
     }
 
     request(server)
@@ -305,6 +306,144 @@ it('LIST COMMENTS BY POST TEST', (done) => {
         });
 
 });
+
+
+
+it('CREATE POST-LIKE TEST', (done) => {
+
+    const headers = {
+        Authorization: "Bearer " + token
+    }
+
+    const params = {
+        post_id:newPost.id
+    }
+
+    request(server)
+        .post('/api/post-like')
+        .set(headers)
+        .send(params)
+        .expect(200)
+        .end((err, res) => {
+            if(err) throw {error:err,response:res.text};
+            console.log(res.text);
+            newPostLike = JSON.parse(res.text).body;
+            done();
+        });
+
+});
+
+
+it('LIST POST-LIKES TEST', (done) => {
+
+    const headers = {
+        Authorization: "Bearer " + token
+    }
+
+    request(server)
+        .get(`/api/post-like/list`)
+        .set(headers)
+        .expect(200)
+        .end((err, res) => {
+            if(err) throw {error:err,response:res.text};
+            console.log(res.text);
+            
+            done();
+        });
+
+});
+
+
+
+it('CREATE COMMENT-LIKE TEST', (done) => {
+
+    const headers = {
+        Authorization: "Bearer " + token
+    }
+
+    const params = {
+        comment_id:newComment.id
+    }
+
+    request(server)
+        .post('/api/comment-like')
+        .set(headers)
+        .send(params)
+        .expect(200)
+        .end((err, res) => {
+            if(err) throw {error:err,response:res.text};
+            console.log(res.text);
+            newCommentLike = JSON.parse(res.text).body;
+            done();
+        });
+
+});
+
+
+it('LIST COMMENT-LIKES TEST', (done) => {
+
+    const headers = {
+        Authorization: "Bearer " + token
+    }
+
+    request(server)
+        .get(`/api/comment-like/list`)
+        .set(headers)
+        .expect(200)
+        .end((err, res) => {
+            if(err) throw {error:err,response:res.text};
+            console.log(res.text);
+            
+            done();
+        });
+
+});
+
+// it('DELETE COMMENT-LIKE TEST', (done) => {
+
+//     const headers = {
+//         Authorization: "Bearer " + token
+//     }
+
+//     const params = {
+//         comment_like_id:newCommentLike.id
+//     }
+
+//     request(server)
+//         .delete('/api/comment-like')
+//         .set(headers)
+//         .send(params)
+//         .expect(200)
+//         .end((err, res) => {
+//             if(err) throw {error:err,response:res.text};
+//             console.log(res.text);
+//             done();
+//         })
+
+// });
+
+// it('DELETE POST-LIKE TEST', (done) => {
+
+//     const headers = {
+//         Authorization: "Bearer " + token
+//     }
+
+//     const params = {
+//         post_like_id:newPostLike.id
+//     }
+
+//     request(server)
+//         .delete('/api/post-like')
+//         .set(headers)
+//         .send(params)
+//         .expect(200)
+//         .end((err, res) => {
+//             if(err) throw {error:err,response:res.text};
+//             console.log(res.text);
+//             done();
+//         })
+
+// });
 
 
 

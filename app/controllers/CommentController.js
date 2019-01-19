@@ -58,7 +58,6 @@ router.get('/api/post/:post_id/comment/list', async (req, res) => {
 router.post('/api/comment', [
     AuthMiddleware,
     check('post_id').isInt().isLength({min:1}),
-    check('user_id').isInt().isLength({min:1}),
     check('text').isString().isLength({min:1})
 ]
 , async (req, res) => {
@@ -70,7 +69,9 @@ router.post('/api/comment', [
 
     const commentService = new CommentService();
     try{
-        var comments = await commentService.create(req.body);
+        var params = req.body;
+        params.user_id = req.userId;
+        var comments = await commentService.create(params);
         return res.json(
             {
                 body:comments
@@ -89,7 +90,6 @@ router.post('/api/comment', [
 router.put('/api/comment', [
     AuthMiddleware,
     check('comment_id').isInt().isLength({min:1}),
-    check('user_id').isInt().isLength({min:1}),
     check('text').isString().isLength({min:1})
 ]
 , async (req, res) => {
