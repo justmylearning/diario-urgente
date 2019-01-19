@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator/check');
-const UserController = require('../services/UserService.js');
+const UserService = require('../services/UserService.js');
 const AuthService = require('../services/AuthService.js');
 
 router.post('/api/auth', [
@@ -15,7 +15,9 @@ router.post('/api/auth', [
         return res.status(422).json({ errors: errors.array() });
     }
 
-    var user = await UserController.findByEmail(req.body.email);
+    const userService = new UserService();
+    const email = req.body.email;
+    var user = await userService.findByField('email', email);
     if(!user)
         return res.status(400).json(
             {

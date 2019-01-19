@@ -1,34 +1,17 @@
-const DatabaseService = require('./DatabaseService.js');
-const sequelize = DatabaseService.getConnection();
 const bcrypt = require('bcryptjs');
+const Service = require('./Service.js');
 
-const User = require('../models/User.js');
+module.exports = class UserService extends Service{
+    //Model ->  Model class
+    //sequelize -> instanceof DB
 
-module.exports = class UserService{
-
-    static async findAll(){
-        var users = await User.findAll();
-        return users;
+    constructor(){
+        super('User');
     }
 
-    static async create(data){
+    async create(data){
         data.password = await bcrypt.hash(data.password, 10);
-        var user = await User.create(data);
-        return user;
+        var model = await this.Model.create(data);
+        return model;
     }
-
-    static async findByEmail(email){
-        var user = await User.findOne({
-            where:{
-                email:email
-            }
-        });
-
-        return user;
-    }
-
-    static async first(){
-        return await User.first();
-    }
-
 }

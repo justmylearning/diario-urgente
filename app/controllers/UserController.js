@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require('express-validator/check');
-
-const UserService = require('../services/UserService.js');
 const LoggerService = require('../services/LoggerService.js');
+const UserService = require('../services/UserService.js');
 
 const AuthMiddleware = require('../middlewares/AuthMiddleware.js');
 
 router.get('/api/user/list', AuthMiddleware, async (req, res) => {
     try{
-        var users = await UserService.findAll();
+        const userService = new UserService();
+        var users = await userService.findAll();
         res.json(
             {
                 "users":users
@@ -25,7 +25,7 @@ router.get('/api/user/list', AuthMiddleware, async (req, res) => {
     }
 });
 
-router.post('/api/user', [
+router.post('/api/register', [
     check('name').isString().isLength({min:5}),
     check('email').isEmail(),
     check('password').isLength({min:5})
@@ -37,15 +37,16 @@ router.post('/api/user', [
     }
 
     try{
-        var user = await UserService.create(req.body);
+        const userService = new UserService();
+        var user = await userService.create(req.body);
         if(user)
-            res.status(201).json(
+            res.status(200).json(
                 {
                     "body":user
                 }
             );
         else
-            throw 'Erro ao cadastrar usuario';
+            throw 'Erro ao cadastrar User';
     }catch(err){
         LoggerService.log(err);
         return res.status(500).json(

@@ -1,25 +1,26 @@
 const Model = require('./Model.js');
+const Comment = require('./Comment.js');
 
-class User extends Model{
+class Post extends Model{
   
   // Sequelize; //Sequelize Class
   // sequelize; //Sequelize DB connection object
 
   getContext(){
-    var sequelizeModel = this.sequelize.define('users', {
+    var sequelizeModel = this.sequelize.define('posts', {
       id: {
         type: this.Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
       },
-      name: {
+      category_id: {
+        type: this.Sequelize.INTEGER
+      },
+      title: {
         type: this.Sequelize.STRING
       },
-      email: {
-        type: this.Sequelize.STRING
-      },
-      password: {
-        type: this.Sequelize.STRING
+      html_content: {
+        type: this.Sequelize.TEXT
       },
       created_at: {
         type: this.Sequelize.DATE
@@ -29,9 +30,11 @@ class User extends Model{
       }
     }, {timestamps: false});
     
+    sequelizeModel.hasMany(Comment, {foreignKey:'post_id'});
+
     sequelizeModel.sync({force: false}); //AUTO UPDATE TABLE STRUCTURE
     return sequelizeModel;
   }
 }
 
-module.exports = new User().getContext();
+module.exports = new Post().getContext();
