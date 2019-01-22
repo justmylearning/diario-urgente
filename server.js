@@ -12,8 +12,8 @@ const modelsBootstrap = require('./app/models/index.js');
 const controllersBootstrap = require('./app/controllers/index.js');
 
 var server = async () => {
-    if(require.main == module)
-        await modelsBootstrap(); //UPDATE DATABASE STRUCTURE
+    // if(require.main == module)
+    //     await modelsBootstrap(); //UPDATE DATABASE STRUCTURE
         
     // parse application/x-www-form-urlencoded
     app.use(bodyParser.urlencoded({ extended: false }))

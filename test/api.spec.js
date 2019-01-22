@@ -8,14 +8,15 @@ var newUser = null;
 var newComment = null;
 var newPostCategory = null;
 var newPostLike = null;
+var forgotToken = null;
 
 
 it('CREATE USER TEST', (done) => {
 
     const params = {
-        email:"teste@teste.com",
+        email:"teste@gmail.com",
         password:"teste.com",
-        name:"Marco@Garuthi"
+        name:"Marco"
     }
 
     request(server)
@@ -52,6 +53,24 @@ it('AUTH TEST', (done) => {
         })
 });
 
+it('RESET PASSWORD TEST', (done) => {
+
+    const params = {
+        email:"teste@teste.com",
+    }
+
+    request(server)
+        .get('/api/forgot')
+        .send(params)
+        .expect(200)
+        .end((err, res) => {
+            if(err) throw {error:err,response:res.text};
+            console.log(res.text);
+            newPost = JSON.parse(res.text).body;
+            done();
+        });
+
+});
 
 
 it('LIST POST-CATEGORIES TEST', (done) => {

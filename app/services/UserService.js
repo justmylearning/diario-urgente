@@ -11,7 +11,13 @@ module.exports = class UserService extends Service{
 
     async create(data){
         data.password = await bcrypt.hash(data.password, 10);
-        var model = await this.Model.create(data);
-        return model;
+        return await this.Model.create(data);
+    }
+
+    async update(data, where){
+        if(data.password)
+            data.password = await bcrypt.hash(data.password, 10);
+        
+        return await this.Model.update(data, {where:where});
     }
 }

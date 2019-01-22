@@ -21,6 +21,9 @@ class User extends Model{
       password: {
         type: this.Sequelize.STRING
       },
+      forgot_token: {
+        type: this.Sequelize.STRING
+      },
       created_at: {
         type: this.Sequelize.DATE
       },
